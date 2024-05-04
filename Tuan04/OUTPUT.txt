@@ -1,0 +1,25 @@
+Input time: 09:10:20
+
+After increasing by 1 second: 09:10:21
+
+After decreasing by 1 minute: 09:09:20
+
+After increasing by 4 hour(s): 13:10:20
+
+After decreasing by 7 hour(s): 02:10:20
+
+Another time: 18:08:54
+
+Sum of times: 03:19:14
+
+Difference of times: 08:58:34
+
+Is current time [09:10:20] greater than [18:08:54]? => No
+
+Is current time [09:10:20] less than [18:08:54]? => Yes
+
+Is current time [09:10:20] greater than or equal to [18:08:54]? => No
+
+Is current time [09:10:20] less than or equal to [18:08:54]? => Yes
+
+Is current time [09:10:20] equal to [18:08:54]? => No

@@ -1,0 +1,9 @@
+Max codes: 1  2  4  5  
+Most frequent phone numbers: 0907333333  
+Most frequent days: 10/03/2015  11/03/2015  12/03/2015  15/03/2015  
+Most frequent times: 13:24:16  18:20:26  19:20:26  19:20:45  
+Top 10 most voted codes:
+Code: 1, Votes: 1
+Code: 2, Votes: 1
+Code: 4, Votes: 1
+Code: 5, Votes: 1
