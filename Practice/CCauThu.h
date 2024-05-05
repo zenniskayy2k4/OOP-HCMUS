@@ -18,7 +18,7 @@ public:
 	CDate(int, int, int);
 	void Input(const string&);
 	void Output(ofstream&) const;
-	bool operator>(const CDate&) const;
+	bool operator<(const CDate&) const;
 	CDate getFullDate() const;
 };
 class CCauThu

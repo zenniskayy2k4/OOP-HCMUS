@@ -12,14 +12,14 @@ CDate::CDate(int year, int month, int day) : m_Year(year), m_Month(month), m_Day
 CDate CDate::getFullDate() const {
 	return CDate(m_Day, m_Month, m_Year);
 }
-bool CDate::operator>(const CDate& other) const {
+bool CDate::operator<(const CDate& other) const {
 	if (m_Year != other.m_Year) {
-		return m_Year > other.m_Year;
+		return m_Year < other.m_Year;
 	}
 	if (m_Month != other.m_Month) {
-		return m_Month > other.m_Month;
+		return m_Month < other.m_Month;
 	}
-	return m_Day > other.m_Day;
+	return m_Day < other.m_Day;
 }
 CDate CCauThu::getFullDate() const {
 	return m_DOB.getFullDate();

@@ -42,7 +42,7 @@ CCauThu CDoiBong::oldestFootballer() {
 	if (m_DoiBong.empty()) return CCauThu();
 	CCauThu oldestPlayer = m_DoiBong[0];
 	for (size_t i = 1; i < m_DoiBong.size(); ++i) {
-		if (m_DoiBong[i].getFullDate() > oldestPlayer.getFullDate()) {
+		if (m_DoiBong[i].getFullDate() < oldestPlayer.getFullDate()) {
 			oldestPlayer = m_DoiBong[i];
 		}
 	}
