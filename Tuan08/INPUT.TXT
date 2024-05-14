@@ -1,0 +1,5 @@
+M110, 201, Trần Tùng Lâm, 12/04/1985, 12 Quốc Lộ 1A Bình Tân TP. HCM, 8.56
+P310, 200, Lý Quốc Kiệt, 02/09/1991, 72 Nguyễn Thị Minh Khai Quận 3 TP. HCM, 4.66
+P350, 200, Trương Hưng Phát, 22/04/1992, 18/23 Kinh Dương Vương Quận 6 TP. HCM, 4.66
+D160, 202, Lâm Tiểu Mai, 12/07/1991, 1/32 Nguyễn Trãi Quận 1 Hồ Chí Minh, 3.76
+T130, 204, Lê Mỹ Ân, 03/08/1992, 12/03/4 Hồ Thị Kỷ Quận 10 Hồ Chí Minh, 3.76
