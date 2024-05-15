@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="INPUT.TXT" />
+    <Text Include="OUTPUT.TXT" />
     <Text Include="SALARY.TXT" />
     <Text Include="SEARCH.TXT" />
     <Text Include="SORTYEAROLD.TXT" />

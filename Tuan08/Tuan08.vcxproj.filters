@@ -68,5 +68,6 @@
     <Text Include="SALARY.TXT" />
     <Text Include="SEARCH.TXT" />
     <Text Include="SORTYEAROLD.TXT" />
+    <Text Include="OUTPUT.TXT" />
   </ItemGroup>
 </Project>

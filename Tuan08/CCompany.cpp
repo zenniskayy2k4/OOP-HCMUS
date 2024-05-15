@@ -62,8 +62,9 @@ void CCompany::Input() {
 }
 
 
-void CCompany::Output(const string& fileName) {
-	ofstream outFile(fileName, ios::trunc);
+void CCompany::Output() {
+	string fileName = "OUTPUT.TXT";
+	ofstream outFile(fileName, ios::binary);
 	if (!outFile.is_open()) {
 		cout << "Unable to open file ";
 		string fileNameCopy = fileName;
@@ -73,7 +74,7 @@ void CCompany::Output(const string& fileName) {
 		cout << fileName << endl;
 		return;
 	}
-
+	outFile << m_ListEmployees.size() << u8" Nhân viên:\n";
 	for (int i = 0; i < m_ListEmployees.size(); i++) {
 		outFile << i + 1 << ". "; m_ListEmployees[i]->Output(outFile);
 		outFile << "."; if (i < m_ListEmployees.size() - 1) outFile << endl;
@@ -160,10 +161,10 @@ void CCompany::Search() {
 	for (int i = 0; i < m_ListEmployees.size(); i++) {
 		if (m_ListEmployees[i]->getDepartment() == findID) {
 			countDepartmentFindID++;
+			if (i < m_ListEmployees.size() && countDepartmentFindID > 1) outFile << '\n';
 			outFile << m_ListEmployees[i]->getID() << ", " << m_ListEmployees[i]->getName() << ", ";
 			m_ListEmployees[i]->getDOB().Output(outFile); outFile << ", " << m_ListEmployees[i]->getAddress();
 		}
-		if (i < m_ListEmployees.size() - 1 && countDepartmentFindID > 1) outFile << endl;
 	}
 }
 void CCompany::SortYearOld() {

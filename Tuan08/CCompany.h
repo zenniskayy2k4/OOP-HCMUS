@@ -13,7 +13,7 @@ public:
 	CCompany(const CCompany&);
 	~CCompany();
 	void Input();
-	void Output(const string&);
+	void Output();
 	double Salary();
 	void Search();
 	void SortYearOld();
