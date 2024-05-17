@@ -3,8 +3,6 @@
 #include <vector>
 #include <cctype>
 #include <string>
-#include <locale>
-#include <codecvt>
 #include "CMyDate.h"
 class CEmployee : public CMyDate
 {
@@ -14,12 +12,12 @@ protected:
 	string m_Name;
 	CMyDate m_Birthday;
 	string m_Address;
-	float m_WageCoefficient;
+	float m_WageCoefficient = 0.0;
 	float m_basicWage = 0.0;
 
 public:
 	CEmployee();
-	CEmployee(string, string, string, CMyDate, string, float);
+	CEmployee(string, string, string, CMyDate, string, float, float);
 	virtual float getSalary();
 	CMyDate getDOB();
 	string getID();
@@ -32,6 +30,6 @@ public:
 	virtual CEmployee* Replicate() const;
 	void OutputSortYearOld(ofstream&);
 	int CalculateAge();
-	int getYearofDOB();
+	int getYearofDOB() const;
 };
 

@@ -4,6 +4,7 @@
 #include "CTester.h"
 #include "CDesigner.h"
 #include "CManager.h"
+#include <set>
 class CCompany : public CEmployee
 {
 private:

@@ -1,8 +1,8 @@
 #include "CDesigner.h"
 CDesigner::CDesigner() : CEmployee() {}
 
-CDesigner::CDesigner(string id, string department, string name, CMyDate dob, string address, float wageCoef)
-	: CEmployee(id, department, name, dob, address, wageCoef) {}
+CDesigner::CDesigner(string id, string department, string name, CMyDate dob, string address, float wageCoef, float basicWage)
+	: CEmployee(id, department, name, dob, address, wageCoef, basicWage) {}
 
 void CDesigner::Input(string& inFile) {
 	CEmployee::Input(inFile);

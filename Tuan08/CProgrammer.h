@@ -6,7 +6,7 @@ protected:
 	float m_Overtime = 0.0;
 public:
 	CProgrammer();
-	CProgrammer(string, string, string, CMyDate, string, float);
+	CProgrammer(string, string, string, CMyDate, string, float, float);
 	float getSalary() override;
 	void Input(string&) override;
 	void Output(ofstream&) override;

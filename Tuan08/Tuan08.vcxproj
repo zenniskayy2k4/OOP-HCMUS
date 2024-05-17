@@ -137,11 +137,11 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Practice\CMyDate.h" />
     <ClInclude Include="CCompany.h" />
     <ClInclude Include="CDesigner.h" />
     <ClInclude Include="CEmployee.h" />
     <ClInclude Include="CManager.h" />
+    <ClInclude Include="CMyDate.h" />
     <ClInclude Include="CProgrammer.h" />
     <ClInclude Include="CTester.h" />
   </ItemGroup>

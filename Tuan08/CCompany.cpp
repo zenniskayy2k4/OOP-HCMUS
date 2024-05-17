@@ -64,7 +64,7 @@ void CCompany::Input() {
 
 void CCompany::Output() {
 	string fileName = "OUTPUT.TXT";
-	ofstream outFile(fileName, ios::binary);
+	ofstream outFile(fileName, ios::trunc);
 	if (!outFile.is_open()) {
 		cout << "Unable to open file ";
 		string fileNameCopy = fileName;
@@ -89,7 +89,6 @@ double CCompany::Salary() {
 		return -1;
 	}
 
-	// Đọc lương cơ bản từ dòng đầu tiên của tệp SALARY.TXT
 	string basicWageStr;
 	getline(inFile, basicWageStr);
 	float basicWage = stof(basicWageStr);
@@ -99,7 +98,6 @@ double CCompany::Salary() {
 		m_ListEmployees[i]->setBasicWage(basicWage);
 	}
 
-	// Biến để tính tổng lương toàn bộ công ty
 	float totalCompanySalary = 0;
 
 	// Đọc và xử lý thông tin lương từng loại nhân viên
@@ -141,7 +139,7 @@ double CCompany::Salary() {
 	for (int i = 0; i < m_ListEmployees.size(); ++i) {
 		totalCompanySalary += m_ListEmployees[i]->getSalary();
 	}
-
+	cout << "List of salaries for " << m_ListEmployees.size() << " employees: \n";
 	// Xuất lương của từng nhân viên
 	for (int i = 0; i < m_ListEmployees.size(); ++i) {
 		cout << "Employee ID: " << m_ListEmployees[i]->getID() << ", Salary: " << fixed << setprecision(3) << m_ListEmployees[i]->getSalary() << endl;
@@ -155,6 +153,20 @@ void CCompany::Search() {
 	if (!outFile.is_open()) {
 		cout << "Unable to open file " << fileName << "\n";
 	}
+	set<string> departmentCodes;
+	for (const auto& employee : m_ListEmployees) {
+		departmentCodes.insert(employee->getDepartment());
+	}
+
+	cout << "List of unique department codes: ";
+	int count = 0;
+	for (auto it = departmentCodes.begin(); it != departmentCodes.end(); ++it) {
+		if (it != departmentCodes.begin()) {
+			cout << ", ";
+		}
+		cout << *it;
+	} cout << '\n';
+
 	string findID;
 	cout << "Please enter the ID of the department you want to search for: ";
 	cin >> findID; int countDepartmentFindID = 0;
@@ -166,10 +178,16 @@ void CCompany::Search() {
 			m_ListEmployees[i]->getDOB().Output(outFile); outFile << ", " << m_ListEmployees[i]->getAddress();
 		}
 	}
+	cout << "The result has been written to SEARCH.TXT. Please open it to read the contents!\n";
 }
 void CCompany::SortYearOld() {
 	sort(m_ListEmployees.begin(), m_ListEmployees.end(), [](const auto& a, const auto& b) {
-		return a->CalculateAge() > b->CalculateAge();
+		if (a->CalculateAge() != b->CalculateAge()) {
+			return a->CalculateAge() > b->CalculateAge();
+		}
+		else {
+			return a->getDOB() < b->getDOB();
+		}
 		});
 	string fileName = "SORTYEAROLD.TXT";
 	ofstream outFile(fileName, ios::trunc);

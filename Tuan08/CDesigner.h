@@ -6,7 +6,7 @@ protected:
 	float m_Bonus = 0.0;
 public:
 	CDesigner();
-	CDesigner(string, string, string, CMyDate, string, float);
+	CDesigner(string, string, string, CMyDate, string, float, float);
 	float getSalary() override;
 	void Input(string&) override;
 	void Output(ofstream&) override;

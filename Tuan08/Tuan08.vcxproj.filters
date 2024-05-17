@@ -56,10 +56,10 @@
     <ClInclude Include="CCompany.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Practice\CMyDate.h">
+    <ClInclude Include="CEmployee.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CEmployee.h">
+    <ClInclude Include="CMyDate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -30,7 +30,7 @@ CMyDate CMyDate::getFullDate() const {
 int CMyDate::GetCurrentYear() {
 	time_t now = time(0);
 	tm localtm;
-	localtime_s(&localtm, &now); // Note: localtime_s is safer than localtime
+	localtime_s(&localtm, &now);
 	int year = 1900 + localtm.tm_year;
 	return year;
 }

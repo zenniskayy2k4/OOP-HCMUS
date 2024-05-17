@@ -1,8 +1,8 @@
 #include "CProgrammer.h"
 CProgrammer::CProgrammer() : CEmployee() {}
 
-CProgrammer::CProgrammer(string id, string department, string name, CMyDate dob, string address, float wageCoef)
-	: CEmployee(id, department, name, dob, address, wageCoef) {}
+CProgrammer::CProgrammer(string id, string department, string name, CMyDate dob, string address, float wageCoef, float basicWage)
+	: CEmployee(id, department, name, dob, address, wageCoef, basicWage) {}
 
 void CProgrammer::Input(string& inFile) {
 	CEmployee::Input(inFile);

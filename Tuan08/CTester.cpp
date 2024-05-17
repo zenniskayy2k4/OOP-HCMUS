@@ -1,8 +1,8 @@
 #include "CTester.h"
 CTester::CTester() : CEmployee() {}
 
-CTester::CTester(string id, string department, string name, CMyDate dob, string address, float wageCoef)
-	: CEmployee(id, department, name, dob, address, wageCoef) {}
+CTester::CTester(string id, string department, string name, CMyDate dob, string address, float wageCoef, float basicWage)
+	: CEmployee(id, department, name, dob, address, wageCoef, basicWage) {}
 
 void CTester::Input(string& inFile) {
 	CEmployee::Input(inFile);
