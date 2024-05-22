@@ -85,6 +85,7 @@ CMyDate CStore::getCurrentDate() {
 	int month = localtm.tm_mon + 1;
 	return CMyDate(day, month, year);
 }
+
 void CStore::ViewExpDate() {
 	string fileName = "EXPDATE.TXT";
 	ofstream outFile(fileName, ios::trunc);
@@ -98,17 +99,23 @@ void CStore::ViewExpDate() {
 		return;
 	}
 	int countOutOfDateFood = 0;
+	bool isExpired = true;
 	for (int i = 0; i < m_listProduct.size(); i++) {
 		if (m_listProduct[i]->getCode()[0] == 'F' &&
 			dynamic_cast<CFood*>(m_listProduct[i])->getExpDate() < CStore::getCurrentDate()) {
-			countOutOfDateFood++;
+			countOutOfDateFood++; isExpired = true;
 			if (i < m_listProduct.size() && countOutOfDateFood > 1) outFile << '\n';
 			outFile << m_listProduct[i]->getCode() << ", " << m_listProduct[i]->getName() << ", " << m_listProduct[i]->getAmount() << ", ";
 			(dynamic_cast<CFood*>(m_listProduct[i])->getExpDate()).Output(outFile);
 			outFile << ".";
 		}
+		else isExpired = false;
 	}
 	outFile.close();
+	//In ra màn hình ko có mặt hàng nào hết hạn
+	if (countOutOfDateFood == 0) cout << u8"The food does not exist in the warehouse or has been deleted!\n";
+	else
+	if (countOutOfDateFood == 0 && !isExpired) cout << "There are no expired foods in the warehouse!\n";
 }
 
 void CStore::Delete() {
@@ -132,11 +139,11 @@ void CStore::Delete() {
 	auto it = find_if(m_listProduct.begin(), m_listProduct.end(), [&deleteID](CProduct* product) {
 		return product->getCode() == deleteID; });
 	if (it != m_listProduct.end()) {
-		m_listProduct.erase(it);
 		delete* it;
+		m_listProduct.erase(it);
 	}
 	else {
-		cout << "Product with ID " << deleteID << " not found!\n";
+		cout << "Product with ID " << deleteID << " not found or has been deleted!\n";
 	}
 }
 void CStore::Buy() {
@@ -182,10 +189,13 @@ void CStore::Buy() {
 		name.erase(0, name.find_first_not_of(" "));
 		name.erase(name.find_last_not_of(" ") + 1);
 		
+		bool foundProduct = false;
 		for (auto& product : m_listProduct) {
 			if (product->getCode() == code && product->getAmount() >= quantity) {
+				foundProduct = true;
 				if (product->getCode()[0] == 'F' && dynamic_cast<CFood*>(product)->getExpDate() < CStore::getCurrentDate()) {
-					outFile << "Thực phẩm " << product->getName() <<" (" << product->getCode() << 
+					count++;
+					outFile << count << ". " << "Thực phẩm " << product->getName() <<" (" << product->getCode() <<
 						") khách hàng lựa chọn đã hết hạn sử dụng nên không bán được!\n";
 				}
 				else {
@@ -208,25 +218,19 @@ void CStore::Buy() {
 
 			}
 			else if (product->getCode() == code && product->getAmount() == 0) {
-				outFile << "Mặt hàng " << product->getName() << " (" << product->getCode() << ") hiện tại đã hết hàng!\n";
+				foundProduct = true;
+				count++;
+				outFile << count << ". " << "Mặt hàng " << product->getName() << " (" << product->getCode() << ") hiện tại đã hết hàng!\n";
 			}
 			else if (product->getCode() == code && product->getAmount() < quantity) {
-				outFile << "Mặt hàng " << product->getName() << " (" << product->getCode() << ") không đủ số lượng hàng mà khách hàng yêu cầu!\n"
-					<< "Cửa hàng sẽ bán hết tất cả số lượng của mặt hàng " << product->getName() << " (" << product->getCode() << ") cho khách hàng!\n";
-				int cost = product->getPrice() * product->getAmount(); count++;
-				if (day_of_week == "Friday" && dynamic_cast<CFood*>(product)) {
-					cost *= 0.8;
-				}
-				else if ((day_of_week == "Tuesday" || day_of_week == "Wednesday") && dynamic_cast<CElectronic*>(product)) {
-					cost *= 0.85;
-				}
-				else if ((day_of_week == "Saturday" || day_of_week == "Sunday") && dynamic_cast<CTerracotta*>(product)) {
-					cost *= 0.7;
-				}
-				outFile << count << ". " << code << ", " << name << ": " << product->getAmount() << " x " << product->getPrice() << " = " << cost << " VNĐ\n";
-				product->setAmount(0);
-				totalPayment += cost;
+				foundProduct = true;
+				count++;
+				outFile << count << ". " << "Mặt hàng " << product->getName() << " (" << product->getCode() << ") không đủ số lượng hàng mà khách hàng yêu cầu!\n";
 			}
+		}
+		if (!foundProduct) {
+			count++;
+			outFile << count << ". " << "Mặt hàng " << name << " (" << code << ") không có trong kho hàng!\n";
 		}
 	}
 	inFile.close();
