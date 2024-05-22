@@ -17,6 +17,7 @@ public:
 	void Input(const string&);
 	void Output(ofstream&) const;
 	bool operator<(const CMyDate&) const;
+	bool operator>(const CMyDate&) const;
 	CMyDate getFullDate() const;
 	int GetCurrentYear();
 };

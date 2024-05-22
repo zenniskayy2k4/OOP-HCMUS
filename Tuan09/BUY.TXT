@@ -1,3 +1,4 @@
 0945678986
-E102, Tay nghe Sony Xperia Z1, 2
+E102, Tay nghe Sony Xperia Z1, 11
 T980, Chén sứ Minh Trang, 10
+F0023, Cải tím Đà Lạt, 30

@@ -4,7 +4,7 @@ CStore::CStore(const CStore& other) {
 	for (const auto& item : other.m_listProduct) {
 		m_listProduct.push_back(item->Replicate());
 	}
-	//m_Amount = other.m_Amount;
+	m_Amount = other.m_Amount;
 }
 CStore::~CStore() {
 	m_listProduct.clear();
@@ -97,13 +97,18 @@ void CStore::ViewExpDate() {
 		cout << fileName << endl;
 		return;
 	}
+	int countOutOfDateFood = 0;
 	for (int i = 0; i < m_listProduct.size(); i++) {
 		if (m_listProduct[i]->getCode()[0] == 'F' &&
 			dynamic_cast<CFood*>(m_listProduct[i])->getExpDate() < CStore::getCurrentDate()) {
-			outFile << m_Code << ", " << m_Name << ", " << m_Amount << ", "; (dynamic_cast<CFood*>(m_listProduct[i])->getExpDate()).Output(outFile);
-			outFile << "."; if (i < m_listProduct.size() - 1) outFile << endl;
+			countOutOfDateFood++;
+			if (i < m_listProduct.size() && countOutOfDateFood > 1) outFile << '\n';
+			outFile << m_listProduct[i]->getCode() << ", " << m_listProduct[i]->getName() << ", " << m_listProduct[i]->getAmount() << ", ";
+			(dynamic_cast<CFood*>(m_listProduct[i])->getExpDate()).Output(outFile);
+			outFile << ".";
 		}
 	}
+	outFile.close();
 }
 
 void CStore::Delete() {
@@ -131,7 +136,7 @@ void CStore::Delete() {
 		delete* it;
 	}
 	else {
-		cout << "Prodcut with ID " << deleteID << " not found!\n";
+		cout << "Product with ID " << deleteID << " not found!\n";
 	}
 }
 void CStore::Buy() {
@@ -140,15 +145,101 @@ void CStore::Buy() {
 		cout << "Unable to open file INPUT.TXT\n";
 		return;
 	}
+
 	string CustomerID;
 	inFile >> CustomerID;
 
-	ofstream outFile("INVOICE.TXT", ios::trunc);
+	inFile.ignore();
+
+	ofstream outFile("INVOICE.TXT", ios::binary);
 	if (!outFile.is_open()) {
 		cout << "Unable to open file INVOICE.TXT";
 		return;
 	}
+	outFile << CustomerID << '\n';
+	auto now = chrono::system_clock::now();
+	time_t now_time_t = chrono::system_clock::to_time_t(now);
+	tm local_tm;
+	localtime_s(&local_tm, &now_time_t);
+	const char* days_of_week[] = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+	const char* day_of_week = days_of_week[local_tm.tm_wday];
+	outFile << put_time(&local_tm, "%H:%M:%S") << " " << day_of_week << " "; CStore::getCurrentDate().Output(outFile);
+	outFile << '\n';
 
+	int totalPayment = 0, discount = 0, count = 0;
+	string line;
+	while (getline(inFile, line)) {
+		if (line.empty()) continue;
+		stringstream ss(line);
+		string code, name;
+		int quantity;
+
+		getline(ss, code, ',');
+		getline(ss, name, ',');
+		ss >> quantity;
+
+		code.erase(0, code.find_first_not_of(" "));
+		name.erase(0, name.find_first_not_of(" "));
+		name.erase(name.find_last_not_of(" ") + 1);
+		
+		for (auto& product : m_listProduct) {
+			if (product->getCode() == code && product->getAmount() >= quantity) {
+				if (product->getCode()[0] == 'F' && dynamic_cast<CFood*>(product)->getExpDate() < CStore::getCurrentDate()) {
+					outFile << "Thực phẩm " << product->getName() <<" (" << product->getCode() << 
+						") khách hàng lựa chọn đã hết hạn sử dụng nên không bán được!\n";
+				}
+				else {
+					count++;
+					int cost = product->getPrice() * quantity;
+					if (day_of_week == "Friday" && dynamic_cast<CFood*>(product)) {
+						discount += cost * 0.2;
+					}
+					else if ((day_of_week == "Tuesday" || day_of_week == "Wednesday") && dynamic_cast<CElectronic*>(product)) {
+						discount += cost * 0.15;
+					}
+					else if ((day_of_week == "Saturday" || day_of_week == "Sunday") && dynamic_cast<CTerracotta*>(product)) {
+						discount += cost * 0.3;
+					}
+
+					totalPayment += cost;
+					product->setAmount(product->getAmount() - quantity);
+					outFile << count << ". " << code << ", " << name << ": " << quantity << " x " << product->getPrice() << " = " << cost << " VNĐ\n";
+				}
+
+			}
+			else if (product->getCode() == code && product->getAmount() == 0) {
+				outFile << "Mặt hàng " << product->getName() << " (" << product->getCode() << ") hiện tại đã hết hàng!\n";
+			}
+			else if (product->getCode() == code && product->getAmount() < quantity) {
+				outFile << "Mặt hàng " << product->getName() << " (" << product->getCode() << ") không đủ số lượng hàng mà khách hàng yêu cầu!\n"
+					<< "Cửa hàng sẽ bán hết tất cả số lượng của mặt hàng " << product->getName() << " (" << product->getCode() << ") cho khách hàng!\n";
+				int cost = product->getPrice() * product->getAmount(); count++;
+				if (day_of_week == "Friday" && dynamic_cast<CFood*>(product)) {
+					cost *= 0.8;
+				}
+				else if ((day_of_week == "Tuesday" || day_of_week == "Wednesday") && dynamic_cast<CElectronic*>(product)) {
+					cost *= 0.85;
+				}
+				else if ((day_of_week == "Saturday" || day_of_week == "Sunday") && dynamic_cast<CTerracotta*>(product)) {
+					cost *= 0.7;
+				}
+				outFile << count << ". " << code << ", " << name << ": " << product->getAmount() << " x " << product->getPrice() << " = " << cost << " VNĐ\n";
+				product->setAmount(0);
+				totalPayment += cost;
+			}
+		}
+	}
+	inFile.close();
+
+	//Kiểm tra xem số lượng hàng còn lại có đủ để bán không, nếu không thì in ra thông báo
+	//Kiểm tra hàng hết date nên không bán
+
+	if (totalPayment > 5000000) {
+		discount += totalPayment * 0.1;
+	}
+	outFile << "Giảm giá: " << discount << " VNĐ\n";
+	outFile << "Số tiền thanh toán: " << totalPayment - discount << " VNĐ";
+	outFile.close();
 }
 
 void CStore::ViewQuantity() {
@@ -171,4 +262,5 @@ void CStore::ViewQuantity() {
 	}
 	outFile.seekp(lineStart);
 	outFile << countOutOfStockProducts;
+	outFile.close();
 }

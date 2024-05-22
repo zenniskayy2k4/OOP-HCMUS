@@ -24,6 +24,16 @@ bool CMyDate::operator<(const CMyDate& other) const {
 	return m_Day < other.m_Day;
 }
 
+bool CMyDate::operator>(const CMyDate& other) const {
+	if (m_Year != other.m_Year) {
+		return m_Year > other.m_Year;
+	}
+	if (m_Month != other.m_Month) {
+		return m_Month > other.m_Month;
+	}
+	return m_Day > other.m_Day;
+}
+
 CMyDate CMyDate::getFullDate() const {
 	return CMyDate(m_Day, m_Month, m_Year);
 }
