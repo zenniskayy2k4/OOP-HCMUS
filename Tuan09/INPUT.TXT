@@ -1,5 +1,5 @@
 E102 (Tai nghe Sony Xperia Z1, Sony, 2050000, 12 tháng, Null, 10)
 T30 (Bình cổ Huế, Hưng Phát, 1000000, Đất sét, 5)
-F0023 (Cải tím Đà Lạt, Việt Food, 25000, 15/05/2024, 18/05/2024, 50)
+F0023 (Cải tím Đà Lạt, Việt Food, 25000, 15/05/2024, 28/05/2024, 50)
 E126 (Loa SoundMax A-8900, SoundMax, 1750000, 12 tháng, 90W, 5)
 T980 (Chén sứ Minh Trang, Công ty TNHH Minh Trang, 50000, Đất sét, 10)
